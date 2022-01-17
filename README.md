@@ -28,29 +28,29 @@ Data model of the database for the project.
 #### Tables
 
 __users__
-- user_id
-- username
-- email
-- wishlist
+- *user_id*, serial primary key
+- _username_, varchar(255) unique not null
+- _email_, varchar(255) unique not null
+- _wishlist_, list of product_id's that reference products
 
 __auth__
-- user_id
+- *user_id*, references users
 - username/password are stored and checked here for login
 
 __reviews__
-- review_id
-- user_id
-- product_id
-_ rating
-_ review_content
+- *review_id*, serial primary key
+- *user_id*, references users
+- *product_id*, references products
+_ *rating*, integer out of 5
+_ *review_content*, text review of product
 
 __products__
-- product_id
-- title
-- description
-- price
-- review_id
-- featured
+- *product_id*, serial primary key
+- *title*, varchar(255)
+- *description*, text description
+- *price*, float
+- *review_id*, references reviews for product if any
+- *featured*, boolean true if the product is featured
 
 
 #### Relationships
