@@ -19,3 +19,23 @@ A shopping site for welding tools
 
 ## Data Model
 Data model of the database for the project.
+
+#### Info Stored
+    -Users: user_id, email, password, username, wishlist items
+    -Reviews: review_id, user_id, product_id, review_content, rating
+    -Products: product_id, title, description, price, review_id
+
+#### Tables
+    __users__
+        -
+
+    __auth__
+        -
+
+    __reviews__
+        -
+
+    __products__
+        -
+
+        
