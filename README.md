@@ -33,13 +33,24 @@ __users__
 - email
 - wishlist
 
- __auth__
-- 
+__auth__
+- user_id
+- username/password are stored and checked here for login
 
 __reviews__
-    -
+- review_id
+- user_id
+- product_id
+_ rating
+_ review_content
 
 __products__
+- product_id
+- title
+- description
+- price
+- review_id
+- featured
 
 
 #### Relationships
