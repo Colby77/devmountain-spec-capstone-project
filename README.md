@@ -23,9 +23,9 @@ Data model of the database for the project.
 <img src='welding_site_db_model.png' height=500px>
 
 #### Info Stored
-    -Users: user_id, email, password, username, wishlist items
+    -Users: user_id, email, password, username, wishlist_id
     -Reviews: review_id, user_id, product_id, review_content, rating
-    -Products: product_id, title, description, price, review_id
+    -Products: product_id, title, description, price
 
 #### Tables
 
@@ -33,11 +33,16 @@ __users__
 - *user_id*, serial primary key
 - _username_, varchar(255) unique not null
 - _email_, varchar(255) unique not null
-- _wishlist_, list of product_id's that reference products
+- *wishlist_id*, references wishlist
 
 __auth__
 - *user_id*, references users
 - username/password are stored and checked here for login
+
+__wishlist__
+- *wishlist_id*, serial primary key
+- *user_id*, references users
+- *product_id*, references products
 
 __reviews__
 - *review_id*, serial primary key
@@ -51,7 +56,6 @@ __products__
 - *title*, varchar(255)
 - *description*, text description
 - *price*, float
-- *review_id*, references reviews for product if any
 - *featured*, boolean true if the product is featured
 
 
