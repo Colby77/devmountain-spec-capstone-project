@@ -27,9 +27,20 @@ Data model of the database for the project.
 
 #### Tables
 
-users | auth | reviews | products
------ | ---- | ------- | --------
-user_id: serial primary key | user_id | review_id | product_id
+__users__
+- user_id
+- username
+- email
+- wishlist
+
+ __auth__
+- 
+
+__reviews__
+    -
+
+__products__
+
 
 #### Relationships
 
@@ -38,16 +49,5 @@ One-Many | Many-Many | One-One
 One user can have many products on wishlist | Many users review many products through the reviews table | One user to one user_id on auth table
 A product has many reviews | |
 
-<!-- __users__
-    
-
- __auth__
-    -
-
-__reviews__
-    -
-
-__products__
-    - -->
 
 
