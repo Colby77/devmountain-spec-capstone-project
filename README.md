@@ -23,7 +23,7 @@ Data model of the database for the project.
 <img src='welding_site_db_model.png' height=500px>
 
 #### Info Stored
-    -Users: user_id, email, password, username, wishlist_id
+    -Users: user_id, email, password, username
     -Reviews: review_id, user_id, product_id, review_content, rating
     -Products: product_id, title, description, price
 
@@ -33,7 +33,6 @@ __users__
 - *user_id*, serial primary key
 - _username_, varchar(255) unique not null
 - _email_, varchar(255) unique not null
-- *wishlist_id*, references wishlist
 
 __auth__
 - *user_id*, references users
