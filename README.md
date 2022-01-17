@@ -36,6 +36,7 @@ user_id: serial primary key | user_id | review_id | product_id
 One-Many | Many-Many | One-One
 -------- | --------- | -------
 One user can have many products on wishlist | Many users review many products through the reviews table | One user to one user_id on auth table
+A product has many reviews | |
 
 <!-- __users__
     
