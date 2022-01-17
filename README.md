@@ -26,8 +26,13 @@ Data model of the database for the project.
     -Products: product_id, title, description, price, review_id
 
 #### Tables
-__users__
-    -
+
+users | auth | reviews | products
+----- | ---- | ------- | --------
+user_id: serial primary key | user_id | review_id | product_id
+
+<!-- __users__
+    
 
  __auth__
     -
@@ -36,6 +41,6 @@ __reviews__
     -
 
 __products__
-    -
+    - -->
 
 
