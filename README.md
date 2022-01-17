@@ -26,16 +26,16 @@ Data model of the database for the project.
     -Products: product_id, title, description, price, review_id
 
 #### Tables
-    __users__
-        -
+__users__
+    -
 
-    __auth__
-        -
+ __auth__
+    -
 
-    __reviews__
-        -
+__reviews__
+    -
 
-    __products__
-        -
+__products__
+    -
 
-        
+
