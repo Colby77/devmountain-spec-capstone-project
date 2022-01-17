@@ -16,3 +16,6 @@ A shopping site for welding tools
     -Use google maps API to allow users to find welding materials in a given
     city
     -Email notifications
+
+## Data Model
+Data model of the database for the project.
