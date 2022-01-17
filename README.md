@@ -20,7 +20,7 @@ A shopping site for welding tools
 ## Data Model
 Data model of the database for the project.
 
-<img src='welding_site_db_model.png' height=300>
+<img src='welding_site_db_model.png' height=500px>
 
 #### Info Stored
     -Users: user_id, email, password, username, wishlist items
