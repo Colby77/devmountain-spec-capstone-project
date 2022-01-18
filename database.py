@@ -15,7 +15,8 @@ class User(db.Model):
     email = db.Column(db.String(), nullable=False, unique=True)
     username = db.Column(db.String(), nullable=False, unique=True)
 
-    user_auth = db.relationship('Auth', back_populates='users', uselist=False)
+    # user_auth = db.relationship('Auth', back_populates='users', uselist=False)
+    user_auth = db.relationship('Auth', back_populates='user', uselist=False)
 
 class Auth(db.Model):
     '''db model for auth table'''
@@ -28,7 +29,7 @@ class Auth(db.Model):
     password = db.Column(db.String(255), nullable=False)
 
     # user = db.relationship('User', backref=db.backref('auth', order_by=user_id))
-    user = db.relationship('User', back_populates='auth')
+    user = db.relationship('User', back_populates='user_auth')
 
 
 class Product(db.Model):
