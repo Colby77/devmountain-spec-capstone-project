@@ -2,16 +2,20 @@ from flask import Flask, render_template, redirect, flash
 from jinja2 import StrictUndefined
 from flask_debugtoolbar import DebugToolbarExtension
 
-app = Flask(__name__)
+from werkzeug.utils import import_string
 
-app.secret_key = 'secret_key'
+app = Flask(__name__)
 
 app.jinja_env.undefined = StrictUndefined
 
 # Production or development environment
-# Set in _config.py file
-app.config.from_object('_config.DevConfig')
+config = import_string('_config.DevelopmentConfig')()
+# config = import_string('_config.ProductionConfig')()
 
+app.config.from_object(config)
+# To test:
+# print(dir(config))
+# print(config.DATABASE_URI)
 
 @app.route('/')
 def home():

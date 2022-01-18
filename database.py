@@ -1,6 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
+import os
 
-from secrets import db_url
+from main import config
 
 db = SQLAlchemy()
 
@@ -78,7 +79,8 @@ def connect_to_db(app):
         Nothing
     '''
     # print(app)
-    app.config['SQLALCHEMY_DATABASE_URI'] = db_url
+    app.config['SQLALCHEMY_DATABASE_URI'] = config.DATABASE_URI
+    # print(config.DATABASE_URI)
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.app = app
     db.init_app(app)
@@ -87,6 +89,8 @@ def connect_to_db(app):
 
 if __name__ == '__main__':
     from main import app
+
+    app.config.from_object(config)
     # print(app)
     # print(type(app))
     connect_to_db(app)
