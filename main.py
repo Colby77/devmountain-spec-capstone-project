@@ -4,9 +4,13 @@ from flask_debugtoolbar import DebugToolbarExtension
 
 app = Flask(__name__)
 
+app.secret_key = 'secret_key'
+
 app.jinja_env.undefined = StrictUndefined
 
-app.config['SECRET_KEY'] = 'secret_key'
+# Production or development environment
+# Set in _config.py file
+app.config.from_object('_config.DevConfig')
 
 
 @app.route('/')
@@ -28,7 +32,8 @@ def register_page():
 
 if __name__ == '__main__':
 
-    app.debug = True
+    app.jinja_env.auto_reload = app.debug
+
     DebugToolbarExtension(app)
 
-    app.run()
+    app.run(port=5000)
