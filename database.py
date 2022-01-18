@@ -14,16 +14,20 @@ class User(db.Model):
     email = db.Column(db.String(), nullable=False, unique=True)
     username = db.Column(db.String(), nullable=False, unique=True)
 
+    user_auth = db.relationship('Auth', back_populates='users', uselist=False)
 
 class Auth(db.Model):
     '''db model for auth table'''
 
     __tablename__ = 'auth'
 
-    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+    # auth_id is only because you need a primary key for SQLAlchemy ORM
+    auth_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), unique=True, nullable=False)
     password = db.Column(db.String(255), nullable=False)
 
-    user = db.relationship('User', backref=db.backref('auth', order_by=user_id))
+    # user = db.relationship('User', backref=db.backref('auth', order_by=user_id))
+    user = db.relationship('User', back_populates='auth')
 
 
 class Product(db.Model):
@@ -32,7 +36,7 @@ class Product(db.Model):
     __tablename__ = 'products'
 
     product_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    title = db.Column(db.String(), nullable=False)
+    title = db.Column(db.String(200), nullable=False)
     description = db.Column(db.Text(), nullable=False)
     price = db.Column(db.Float(), nullable=False)
     featured = db.Column(db.Boolean, nullable=True)
