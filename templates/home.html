@@ -1,5 +1,18 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
     <h1>This is the homepage</h1>
+
+    {% for product in products %}
+
+    <div>
+        <h2>{{ product.title }}</h2>
+        <p>{{ product.description }}</p>
+        <p>{{ product.price }}</p>
+        <a href='/products/{{ product.product_id }}'>Detail</a>
+    </div>
+
+    {% endfor %}
+
 {% endblock %}
