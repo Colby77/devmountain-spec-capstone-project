@@ -1,4 +1,5 @@
 from decimal import Decimal
+from random import randint
 
 from main import app
 from database import (connect_to_db, db, User,
@@ -9,21 +10,22 @@ from faker import Faker
 fake = Faker()
 
 
-def create_users():
+def create_users(quantity=10):
     '''
     Description:
         Creates fake users with Faker and saves them to the
         database. Also creates a row in the Auth table with
         the created user's password.
     Parameters:
-        None
+        quantity: int, amount of products to create
+        default: 10
     Returns:
         Nothing
     '''
     Auth.query.delete()
     User.query.delete()
 
-    for x in range(0, 2):
+    for x in range(0, quantity):
         email = fake.email()
         username = fake.user_name()
         password = fake.password()
@@ -46,20 +48,21 @@ def create_users():
     db.session.commit()
     print('Users/Auth seeded!')
 
-def create_products():
+def create_products(quantity=10):
     '''
     Description:
         Creates fake product information with Faker and
         saves it to the database
     Parameters:
-        None
+        quantity: int, amount of fake products to create
+        default: 10
     Returns:
         Nothing
     '''
     
     Product.query.delete()
 
-    for x in range(0, 2):
+    for x in range(0, quantity):
         title = fake.bs()
         description = fake.text(max_nb_chars=150)
         price = fake.pricetag()
@@ -84,10 +87,50 @@ def create_products():
     print('Products seeded!')
 
 
+def create_reviews():
+    '''
+    Description:
+        Creates a fake review for each product in
+        the database
+    Parameters:
+        None
+    Returns:
+        Nothing
+    '''
+    Review.query.delete()
+    count = 0
+
+    for row in db.session.query(Product.product_id).all():
+        
+        rating = randint(1, 5)
+        review_content = fake.text(max_nb_chars=150)
+
+
+        review = Review(
+                review_id = count,
+                user_id = count,
+                product_id = row.product_id,
+                rating = rating,
+                review_content = review_content
+                )
+        count += 1
+
+        db.session.add(review)
+    
+    db.session.commit()
+    print('Reviews seeded!')
+        
+
 if __name__ == '__main__':
     connect_to_db(app)
 
-    create_users()
-    create_products()
+    Auth.query.delete()
+    Review.query.delete()
+    User.query.delete()
+    Product.query.delete()
+
+    create_users(20)
+    create_products(20)
+    create_reviews()
 
     print('DB Connected')

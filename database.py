@@ -16,7 +16,8 @@ class User(db.Model):
     username = db.Column(db.String(), nullable=False, unique=True)
 
     # user_auth = db.relationship('Auth', back_populates='users', uselist=False)
-    user_auth = db.relationship('Auth', back_populates='user', uselist=False)
+    user_auth = db.relationship('Auth', backref='users', uselist=False)
+    user_review = db.relationship('Review', back_populates='from_user', uselist=False)
 
 class Auth(db.Model):
     '''db model for auth table'''
@@ -29,7 +30,7 @@ class Auth(db.Model):
     password = db.Column(db.String(255), nullable=False)
 
     # user = db.relationship('User', backref=db.backref('auth', order_by=user_id))
-    user = db.relationship('User', back_populates='user_auth')
+    # user = db.relationship('User', back_populates='user_auth')
 
 
 class Product(db.Model):
@@ -43,6 +44,8 @@ class Product(db.Model):
     price = db.Column(db.Numeric(), nullable=False)
     featured = db.Column(db.Boolean, nullable=True)
 
+    p = db.relationship('Review', backref='products')
+
 
 class Review(db.Model):
     '''db model for reviews table'''
@@ -55,8 +58,8 @@ class Review(db.Model):
     rating = db.Column(db.Integer, nullable=False)
     review_content = db.Column(db.Text(), nullable=False)
 
-    user = db.relationship('User', backref=db.backref('reviews', order_by=review_id))
-    product = db.relationship('Product', backref=db.backref('reviews', order_by=review_id))
+    from_user = db.relationship('User', back_populates='user_review')
+    # product = db.relationship('Product', backref=db.backref('p', order_by=review_id))
 
 
 class Wishlist(db.Model):
@@ -95,4 +98,5 @@ if __name__ == '__main__':
     # print(app)
     # print(type(app))
     connect_to_db(app)
+    db.create_all()
     print('Database Connected')
