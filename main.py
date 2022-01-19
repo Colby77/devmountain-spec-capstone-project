@@ -1,4 +1,5 @@
-from flask import Flask, render_template, redirect, flash
+from flask import (Flask, render_template, redirect, flash,
+                request, session)
 from jinja2 import StrictUndefined
 from flask_debugtoolbar import DebugToolbarExtension
 
@@ -35,7 +36,7 @@ def home():
 def show_product(id):
     
     product = Product.query.get(id)
-    
+
     query = """
     SELECT u.username, r.* FROM users u
     INNER JOIN reviews r
@@ -48,10 +49,40 @@ def show_product(id):
 
     return render_template('product_page.html', product=product, reviews=reviews)
 
-@app.route('/login')
+@app.route('/login', methods=['GET'])
 def login_page():
 
     return render_template('login.html')
+
+@app.route('/login', methods=['POST'])
+def login():
+    email = request.form['email']
+    password = request.form['password']
+
+    user = User.query.filter_by(email=email).first()
+    user_password = Auth.query.filter_by(user_id=user.user_id).first()
+
+    if user:
+        if user_password.password == password:
+            session['user'] = user.username
+            print(session)
+            flash(f'Welcome {user.username}!', 'success')
+            return redirect('/')
+        else:
+            flash('Password incorrect', 'error')
+            return redirect('/login')
+    else:
+        flash('User not found', 'error')
+        return redirect('/login')
+
+
+@app.route('/logout')
+def logout():
+
+    del session['user']
+    flash('Logged out', 'success')
+    print(session)
+    return redirect('/')
 
 
 @app.route('/register')

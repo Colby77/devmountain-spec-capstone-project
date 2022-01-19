@@ -3,6 +3,12 @@
 {% block content %}
 
     <h1>This is the homepage</h1>
+    
+    {% if session.get('user') %}
+    <a href='/logout'>Logout</a>
+    {% else %}
+    <a href='/login'>Login</a>
+    {% endif %}
 
     {% for product in products %}
 

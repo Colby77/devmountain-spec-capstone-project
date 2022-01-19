@@ -7,6 +7,13 @@
     <title>WeldingStuff.com</title>
 </head>
 <body>
+
+    {% with messages = get_flashed_messages() %}
+        {% for message in messages %}
+            <div>{{ message }}</div>
+        {% endfor %}
+    {% endwith %}
+
     <header>Hello World</header>
     <nav>
         <a href='/'>Home</a>
