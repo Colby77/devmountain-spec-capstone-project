@@ -17,6 +17,7 @@ app.config.from_object(config)
 # print(dir(config))
 # print(config.DATABASE_URI)
 
+
 @app.route('/')
 def home():
     
