@@ -15,6 +15,7 @@ body {
   /* Carousel base class */
   .carousel {
     margin-bottom: 4rem;
+    
   }
   /* Since positioning the image, we need to help out the caption */
   .carousel-caption {
@@ -26,14 +27,32 @@ body {
   .carousel-item {
     height: 32rem;
   }
+  /* .img-container {
+    width:100%;
+    height:100%;
+    padding-left:25%;
+    padding-right:25%;
+    background-color: red;
+  } */
   .carousel-item > img {
     position: absolute;
     top: 0;
     left: 0;
-    min-width: 100%;
-    height: 32rem;
+    /* right: 25rem; */
+    /* min-width: 50%; */
+    max-width: 100%;
+    /* width: auto; */
+    /* height: 32rem; */
+    min-height: 100%;
+    height: auto;
+    object-fit: cover;
+    /* size: 100%; */
+    /* height:100%; */
   }
-  
+
+
+/*   
+
   
   /* MARKETING CONTENT
   -------------------------------------------------- */
@@ -92,3 +111,7 @@ body {
     }
   }
   
+  /* #welding-img { */
+    /* background-image: url('https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.teahub.io%2Fphotos%2Ffull%2F38-388489_smaw-welding.jpg&f=1&nofb=1'); */
+    /* background-color: red; */
+  /* } */
