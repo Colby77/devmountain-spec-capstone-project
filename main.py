@@ -26,16 +26,19 @@ DB_URI = config.DATABASE_URI
 
 @app.route('/')
 def home():
-    
-    products = Product.query.all()
 
-    return render_template('home.html', products=products)
+    query = 'SELECT * FROM products WHERE featured = True;'
+    featured_items = db.session.execute(query)
+
+    return render_template('home.html', featured_items=featured_items)
 
 
 @app.route('/products')
 def products_page():
+
+    products = Product.query.all()
     
-    return render_template('products.html')
+    return render_template('products.html', products=products)
 
 
 @app.route('/products/<int:id>')

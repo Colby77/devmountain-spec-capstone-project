@@ -9,16 +9,7 @@
     <a href='/login'>Login</a>
     {% endif %}
     
-    {% for product in products %}
-    
-    <div>
-        <h2>{{ product.title }}</h2>
-        <p>{{ product.description }}</p>
-        <p>{{ product.price }}</p>
-        <a href='/products/{{ product.product_id }}'>Detail</a>
-    </div>
-    
-    {% endfor %} -->
+-->
     
     
     {% block content %}
@@ -117,41 +108,22 @@
           <!-- Wrap the rest of the page in another container to center all the content. -->
         
           <div class="container marketing">
-        
+
             <!-- Three columns of text below the carousel -->
             <div class="row">
+              {% for item in featured_items %}
               <div class='col-lg-4'>
-              <div class="card" style="width: 18rem;">
-                <img src="../static/img/welder-image.jpg" class="card-img-top" alt="...">
-                <div class="card-body">
-                  <h5 class="card-title">Card title</h5>
-                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                  <a href="#" class="btn btn-primary">Go somewhere</a>
-                </div>
-              </div>
-              </div>
-     
-                <div class='col-lg-4'>
                 <div class="card" style="width: 18rem;">
-                  <img src="../static/img/tig_gloves.jpg" class="card-img-top" alt="...">
+                  <img src="{{ item.picture_url }}" class="card-img-top" alt="...">
                   <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                  </div>
+                    <h5 class="card-title">{{ item.title }}</h5>
+                    <p class="card-text">{{ item.description }}</p>
+                    <p class="fw-bolder">${{ item.price }}</p>
+                    <a href="#" class="btn btn-primary">Details</a>
                 </div>
-                </div>
-
-                  <div class='col-lg-4'>
-                  <div class="card" style="width: 18rem;">
-                    <img src="../static/img/floor_jack.jpg" class="card-img-top" alt="...">
-                    <div class="card-body">
-                      <h5 class="card-title">Card title</h5>
-                      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                      <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                  </div>
-                  </div>
+              </div>
+              </div>
+              {% endfor %}
               </div>
             
         

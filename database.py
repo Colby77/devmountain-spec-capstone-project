@@ -41,6 +41,7 @@ class Product(db.Model):
     product_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     title = db.Column(db.String(200), nullable=False)
     description = db.Column(db.Text(), nullable=False)
+    picture_url = db.Column(db.String(200), nullable=True)
     price = db.Column(db.Numeric(), nullable=False)
     featured = db.Column(db.Boolean, nullable=True)
 
