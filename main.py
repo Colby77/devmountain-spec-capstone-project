@@ -69,9 +69,9 @@ def login():
     password = request.form['password']
 
     user = User.query.filter_by(email=email).first()
-    user_password = Auth.query.filter_by(user_id=user.user_id).first()
 
     if user:
+        user_password = Auth.query.filter_by(user_id=user.user_id).first()
         if user_password.password == password:
             session['user'] = user.username
             print(session)

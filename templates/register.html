@@ -18,6 +18,15 @@
     
     <main class="form-signin">
       <form method='POST' action='{{ url_for("register") }}'>
+        {% with messages = get_flashed_messages(with_categories=True) %}
+        {% for category, message in messages %}
+          {% if category == 'warning' %}
+          <div class="alert alert-warning" role="alert">{{ message }}</div>
+          {% elif category == 'success' %}
+          <div class="alert alert-success" role="alert">{{ message }}</div>
+          {% endif %}
+        {% endfor %}
+      {% endwith %}
         <img class="mb-4" src="../static/img/icons8-welder-50.png" alt="">
         <h1 class="h3 mb-3 fw-normal">Create An Account</h1>
     

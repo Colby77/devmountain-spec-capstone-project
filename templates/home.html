@@ -19,6 +19,7 @@
 
     <body>
         <header>
+        
           <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
             <div class="container-fluid">
               <!-- <a class="navbar-brand" href="/">Home</a> -->
@@ -38,6 +39,15 @@
                     <a class="nav-link disabled">Disabled</a>
                   </li>
                 </ul>
+                <!-- {% with messages = get_flashed_messages(with_categories=True) %}
+                {% for category, message in messages %}
+                  {% if category == 'error' %}
+                  <div class="alert alert-danger" role="alert">{{ message }}</div>
+                  {% elif category == 'success' %}
+                  <div class="alert alert-success" role="alert">{{ message }}</div>
+                  {% endif %}
+                {% endfor %}
+              {% endwith %} -->
                 <form class="d-flex">
                   <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                   <button class="btn btn-outline-success" type="submit">Search</button>
@@ -109,7 +119,15 @@
           <!-- Wrap the rest of the page in another container to center all the content. -->
         
           <div class="container marketing">
-
+            {% with messages = get_flashed_messages(with_categories=True) %}
+            {% for category, message in messages %}
+              {% if category == 'error' %}
+              <div class="alert alert-danger" role="alert">{{ message }}</div>
+              {% elif category == 'success' %}
+              <div class="alert alert-success" role="alert">{{ message }}</div>
+              {% endif %}
+            {% endfor %}
+          {% endwith %}
             <!-- Three columns of text below the carousel -->
             <div class="row">
               {% for item in featured_items %}
