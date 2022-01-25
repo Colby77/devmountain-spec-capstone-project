@@ -139,8 +139,52 @@ def register():
         return redirect('/register')
 
 
+@app.route('/wishlist')
+def show_wishlist():
 
+    product_list = []
+    order_total = 0
+
+    if session.get('wishlist'):
+        for product, qty in session['wishlist'].items():
+            p = Product.query.filter_by(product_id=product).first()
+            # title = p.title
+            price = p.price
+            p.quantity = qty
+            # picture = p.picture_url
+
+            cost = qty * price
+            order_total += cost
+            
+            print(p)
+            product_list.append(p)
+
+    return render_template('wishlist.html', product_list=product_list, order_total=order_total)
      
+
+@app.route('/add_to_wishlist/<product_id>')
+def add_to_wishlist(product_id):
+    
+    if session.get('wishlist'):
+        if product_id in session['wishlist']:
+            session['wishlist'][product_id] += 1
+            print(session)
+        else:
+            session['wishlist'][product_id] = 1
+    else:
+        session['wishlist'] = {}
+        session['wishlist'][product_id] = 1
+        print(session)
+
+    flash('Item added to wishlist', 'success')
+    return redirect('/wishlist')
+
+
+@app.route('/checkout')
+def checkout():
+
+    flash("Checkout hasn't been implemented", 'info')
+    return redirect('/')
 
 
 if __name__ == '__main__':
