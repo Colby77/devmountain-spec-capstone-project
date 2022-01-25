@@ -2,6 +2,53 @@
 
 {% block content %}
 
-<h1>This is the register page</h1>
+<!-- <h1>This is the login page</h1>
+
+<form method='POST' action='{{ url_for("login") }}'>
+    <input name='email' placeholder="email"><br>
+    <input type='password' name='password' placeholder="password"><br>
+    <button type='submit'>Login</button>
+</form> -->
+
+  <!-- Custom styles for this template -->
+  <link href="static/css/signin.css" rel="stylesheet">
+</head>
+
+<body class="text-center">
+    
+    <main class="form-signin">
+      <form method='POST' action='{{ url_for("register") }}'>
+        <img class="mb-4" src="../static/img/icons8-welder-50.png" alt="">
+        <h1 class="h3 mb-3 fw-normal">Create An Account</h1>
+    
+        <div class="form-floating">
+          <input name='email' type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+          <label for="floatingInput">Email address</label>
+        </div>
+        <div class="form-floating">
+          <input name='username' type="text" class="form-control" id="floatingPassword" placeholder="Password">
+          <label for="floatingPassword">Username</label>
+        </div>
+        <div class="form-floating">
+            <input name='password1' type="password" class="form-control" id="floatingInput" placeholder="name@example.com">
+            <label for="floatingInput">Password</label>
+        </div>
+          <div class="form-floating">
+            <input name='password2' type="password" class="form-control" id="floatingPassword" placeholder="Password">
+            <label for="floatingPassword">Confirm Password</label>
+          </div>
+    
+        <div class="checkbox mb-3">
+          <label>
+            <a href="/register" class="link-primary">No account? Create an account</a>
+          </label>
+        </div>
+        <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+        <p class="mt-5 mb-3 text-muted">&copy; 2017–2021</p>
+      </form>
+    </main>
+    
+        
+      </body>
 
 {% endblock %}

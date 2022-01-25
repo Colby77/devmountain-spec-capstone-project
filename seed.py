@@ -1,11 +1,13 @@
 from decimal import Decimal
 from random import randint
 
+from faker import Faker
+from sqlalchemy import func
+
 from main import app
 from database import (connect_to_db, db, User,
                     Auth, Review, Wishlist, Product)
 
-from faker import Faker
 
 fake = Faker()
 
@@ -50,12 +52,12 @@ def create_users(quantity=10):
 
     # create specific root user
     root = User(
-        user_id=quantity+1,
+        user_id=quantity,
         email='root@root.com',
         username='root'
     )
     root_auth = Auth(
-        auth_id=quantity+1,
+        auth_id=quantity,
         user_id=root.user_id,
         password='root'
     )
@@ -80,6 +82,37 @@ def create_products(quantity=10):
     
     Product.query.delete()
 
+     # create specific products
+    mig_welder = Product(
+        product_id = 0,
+        title = 'Easy-Flux Welder',
+        description = 'Easy to use mig welder. Green.',
+        picture_url = '../static/img/welder-image.jpg',
+        price = 199.99,
+        featured = True
+    )
+    tig_gloves = Product(
+        product_id = 1,
+        title = 'Tig-Welding Gloves',
+        description = 'Thin leather gloves for tig welding',
+        picture_url = '../static/img/tig_gloves.jpg',
+        price = 19.99,
+        featured = True
+    )
+    floor_jack = Product(
+        product_id = 2,
+        title = 'Floor Jack',
+        description = 'Cool red 3 ton floor jack. Works.',
+        picture_url = '../static/img/floor_jack.jpg',
+        price = 299.99,
+        featured = True
+    )
+    db.session.add(mig_welder)
+    db.session.add(tig_gloves)
+    db.session.add(floor_jack)
+
+    count = 3
+
     # create random fake products
     for x in range(0, quantity):
         title = fake.bs()
@@ -92,7 +125,7 @@ def create_products(quantity=10):
         price = Decimal(price)
 
         product = Product(
-            product_id = x,
+            product_id = count,
             title = title,
             description = description,
             picture_url = '',
@@ -100,36 +133,11 @@ def create_products(quantity=10):
             featured = False
         )
 
+        count += 1
+
         db.session.add(product)
 
-    # create specific products
-    mig_welder = Product(
-        product_id = x + 1,
-        title = 'Easy-Flux Welder',
-        description = 'Easy to use mig welder. Green.',
-        picture_url = '../static/img/welder-image.jpg',
-        price = 199.99,
-        featured = True
-    )
-    tig_gloves = Product(
-        product_id = x + 2,
-        title = 'Tig-Welding Gloves',
-        description = 'Thin leather gloves for tig welding',
-        picture_url = '../static/img/tig_gloves.jpg',
-        price = 19.99,
-        featured = True
-    )
-    floor_jack = Product(
-        product_id = x + 3,
-        title = 'Floor Jack',
-        description = 'Cool red 3 ton floor jack. Works.',
-        picture_url = '../static/img/floor_jack.jpg',
-        price = 299.99,
-        featured = True
-    )
-    db.session.add(mig_welder)
-    db.session.add(tig_gloves)
-    db.session.add(floor_jack)
+   
 
     db.session.commit()
     print('Products seeded!')
@@ -149,7 +157,8 @@ def create_reviews():
 
     # Create random reviews
     total = db.session.execute('SELECT COUNT(*) FROM users;').first()
-    total = total.count
+    total = total.count - 1
+    
     count = 0
 
     for row in db.session.query(Product.product_id).all():
@@ -171,6 +180,35 @@ def create_reviews():
     
     db.session.commit()
     print('Reviews seeded!')
+
+def set_user_id_seq():
+    '''
+    Description:
+        Resets the user_id sequence to the latest
+        user_id primary key
+    Parameters:
+        None
+    Returns:
+        Nothing
+    '''
+    result = db.session.query(func.max(User.user_id)).one()
+    max_id = int(result[0])
+    print(max_id)
+
+    user_sequence = f"SELECT setval('users_user_id_seq', {max_id});"
+    db.session.execute(user_sequence)
+
+    result = db.session.query(func.max(Auth.auth_id)).one()
+    max_id = int(result[0])
+    print(max_id)
+
+    auth_sequence = f"SELECT setval('auth_auth_id_seq', {max_id});"
+    db.session.execute(auth_sequence)
+
+
+    db.session.commit()
+
+
         
 
 if __name__ == '__main__':
@@ -184,5 +222,7 @@ if __name__ == '__main__':
     create_users(20)
     create_products(20)
     create_reviews()
+
+    set_user_id_seq()
 
     print('DB Connected')

@@ -94,10 +94,54 @@ def logout():
     return redirect('/')
 
 
-@app.route('/register')
+@app.route('/register', methods=['GET'])
 def register_page():
 
+
     return render_template('register.html')
+
+
+@app.route('/register', methods=['POST'])
+def register():
+
+    email = request.form['email']
+    username = request.form['username']
+    password1 = request.form['password1']
+    password2 = request.form['password2']
+
+    user = User.query.filter_by(email=email).first()
+
+    print(email, username, password1, password2)
+
+    if password1 == password2:
+        if not user:
+            new_user = User(
+                email=email,
+                username=username
+            )
+            db.session.add(new_user)
+            db.session.commit()
+
+            new_user_auth = Auth(
+                user_id=new_user.user_id,
+                password=password1
+            )
+            
+            db.session.add(new_user_auth)
+            db.session.commit()
+            flash('Account created', 'success')
+            return redirect('/login')
+        else:
+            flash(f'User with email {email} already exists', 'warning')
+            return redirect('/register')
+    else:
+        flash(f"Passwords don't match", 'warning')
+        return redirect('/register')
+
+
+
+     
+
 
 if __name__ == '__main__':
 

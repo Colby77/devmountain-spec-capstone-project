@@ -1,4 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
+
 import os
 
 # from main import DB_URI
@@ -18,6 +19,7 @@ class User(db.Model):
     # user_auth = db.relationship('Auth', back_populates='users', uselist=False)
     user_auth = db.relationship('Auth', backref='users', uselist=False)
     user_review = db.relationship('Review', back_populates='from_user', uselist=False)
+
 
 class Auth(db.Model):
     '''db model for auth table'''
@@ -47,6 +49,8 @@ class Product(db.Model):
 
     p = db.relationship('Review', backref='products')
 
+    
+
 
 class Review(db.Model):
     '''db model for reviews table'''
@@ -74,6 +78,22 @@ class Wishlist(db.Model):
 
     user = db.relationship('User', backref=db.backref('users', order_by=wishlist_id))
     product = db.relationship('Product', backref=db.backref('products', order_by=wishlist_id))
+
+
+# def get_current_user_id():
+#      '''
+#      Description:
+#          Gets the value of the current user_id
+#          primary key in the 'users' table
+#      Parameters:
+#          None
+#      Returns:
+#          Int: the current user_id primary key
+#      '''
+#      query = "SELECT currval('users_user_id_seq');"
+#      result = db.session.execute(query)
+#      print(result)
+
 
 
 def connect_to_db(app):
