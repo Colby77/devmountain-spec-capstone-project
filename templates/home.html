@@ -1,15 +1,5 @@
 {% extends 'base.html' %}
 
-
-<!-- <h1>This is the homepage</h1> -->
-
-<!-- {% if session.get('user') %}
-    <a href='/logout'>Logout</a>
-    {% else %}
-    <a href='/login'>Login</a>
-    {% endif %}
-    
--->
     
     
     {% block content %}
@@ -19,10 +9,8 @@
 
     <body>
         <header>
-        
           <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
             <div class="container-fluid">
-              <!-- <a class="navbar-brand" href="/">Home</a> -->
               <img src='../static/img/icons8-welder-50_white.png'>
               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -30,7 +18,11 @@
               <div class="collapse navbar-collapse" id="navbarCollapse">
                 <ul class="navbar-nav me-auto mb-2 mb-md-0">
                   <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/login">Account</a>
+                    {% if session.get('user') %}
+                      <a class="nav-link active" aria-current="page" href="/logout">Logout</a>
+                    {% else %}
+                      <a class="nav-link active" aria-current="page" href="/login">Account</a>
+                    {% endif %}
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" href="/products">/products</a>
@@ -39,15 +31,6 @@
                     <a class="nav-link disabled">Disabled</a>
                   </li>
                 </ul>
-                <!-- {% with messages = get_flashed_messages(with_categories=True) %}
-                {% for category, message in messages %}
-                  {% if category == 'error' %}
-                  <div class="alert alert-danger" role="alert">{{ message }}</div>
-                  {% elif category == 'success' %}
-                  <div class="alert alert-success" role="alert">{{ message }}</div>
-                  {% endif %}
-                {% endfor %}
-              {% endwith %} -->
                 <form class="d-flex">
                   <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                   <button class="btn btn-outline-success" type="submit">Search</button>
@@ -67,10 +50,8 @@
             </div>
             <div class="carousel-inner">
               <div class="carousel-item active">
-                <!-- <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill='#222'/></svg> -->
                   <img src='../static/img/welding_img.jpg' 
                   class="d-block w-100" aria-hidden="true">
-
                 <div class="container">
                   <div class="carousel-caption text-start">
                     <h1>Welding</h1>
@@ -79,9 +60,9 @@
                   </div>
                 </div>
               </div>
+
               <div class="carousel-item">
                 <img src='../static/img/tools_img.jpg' class = 'd-block w-100'>
-        
                 <div class="container">
                   <div class="carousel-caption">
                     <h1>Automotive</h1>
@@ -90,9 +71,9 @@
                   </div>
                 </div>
               </div>
+
               <div class="carousel-item">
                 <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#777"/></svg>
-        
                 <div class="container">
                   <div class="carousel-caption text-end">
                     <h1>One more for good measure.</h1>
@@ -101,6 +82,7 @@
                   </div>
                 </div>
               </div>
+              
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
               <span class="carousel-control-prev-icon" aria-hidden="true"></span>
