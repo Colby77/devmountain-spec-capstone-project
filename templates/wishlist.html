@@ -80,7 +80,7 @@
     {% endif %}
   <hr class="my-4"> -->
   
-
+  {% if product_list %}
   <table class="table table-dark table-striped table-hover align-middle" style='max-width: 100%;'>
     <!-- <thead>
       <tr>
@@ -110,6 +110,13 @@
   <p class="fw-bolder">Total: ${{ order_total }}</p>
   <a class="btn btn-primary btn-lg" href='/checkout'>Proceed to Checkout</a>
   <a class="btn btn-success btn-lg" href='/products'>Continue Shopping</a>
+
+  {% else %}
+
+  <h2>Your cart is empty!</h2>
+  <a class="btn btn-success btn-lg" href='/products'>Back To Shopping</a>
+
+  {% endif %}
 
 </div>
 </main>

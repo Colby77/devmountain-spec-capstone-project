@@ -75,7 +75,7 @@ def login():
         if user_password.password == password:
             session['user'] = user.username
             print(session)
-            flash(f'Welcome {user.username}!', 'success')
+            flash(f'Welcome {session["user"]}!', 'success')
             return redirect('/')
         else:
             flash('Password incorrect', 'error')
@@ -88,7 +88,7 @@ def login():
 @app.route('/logout')
 def logout():
 
-    del session['user']
+    session.clear()
     flash('Logged out', 'success')
     print(session)
     return redirect('/')
@@ -164,6 +164,7 @@ def show_wishlist():
 
 @app.route('/add_to_wishlist/<product_id>')
 def add_to_wishlist(product_id):
+    
     
     if session.get('wishlist'):
         if product_id in session['wishlist']:
