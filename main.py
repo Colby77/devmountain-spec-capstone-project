@@ -1,5 +1,5 @@
 from flask import (Flask, render_template, redirect, flash,
-                request, session)
+                request, session, url_for)
 from jinja2 import StrictUndefined
 from flask_debugtoolbar import DebugToolbarExtension
 
@@ -188,13 +188,28 @@ def checkout():
     return redirect('/')
 
 
-@app.route('/map')
+@app.route('/map', methods=['GET'])
 def show_map():
+
+
+    return render_template('map.html', search='')
+
+@app.route('/map', methods=['POST'])
+def map_search():
+
+    city = request.form['city']
+    state = request.form['state']
+    material = request.form['material']
+
+    print(city)
+    print(state)
+    print(material)
 
     api_key = config.API_KEY
 
-    return render_template('map.html', api_key=api_key)
+    search= f'https://www.google.com/maps/embed/v1/search?key={api_key}&q=buy+{material}+near+{city}+{state}'
 
+    return render_template('map.html', search=search)
 
 if __name__ == '__main__':
 
