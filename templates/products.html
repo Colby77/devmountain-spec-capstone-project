@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<header>
+<!-- <header>
     <div class="collapse bg-dark" id="navbarHeader">
       <div class="container">
         <div class="row">
@@ -24,7 +24,6 @@
     <div class="navbar navbar-dark bg-dark shadow-sm">
       <div class="container">
         <a href="/" class="navbar-brand d-flex align-items-center">
-          <!-- <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true" class="me-2" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg> -->
           <img src='../static/img/icons8-welder-50_white.png'>
           <strong>Home</strong>
         </a>
@@ -34,7 +33,40 @@
       </div>
     </div>
   </header>
-  
+   -->
+  </head>
+   <header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="/"><img src='../static/img/icons8-welder-50_white.png'></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/products">Shop</a>
+            </li>
+            <li class="nav-item">
+              {% if session.get('user') %}
+              <a class="nav-link active" aria-current="page" href="/logout">Logout</a>
+            {% else %}
+              <a class="nav-link active" aria-current="page" href="/login">Account</a>
+            {% endif %}
+            </li>
+            <li>
+              <a class="nav-link active" aria-current="page" href="/map">Suppliers</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/wishlist"><svg xmlns="http://www.w3.org/2000/svg" height="25" fill="white" class="bi bi-cart2" viewBox="0 0 16 16">
+                <path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5zM3.14 5l1.25 5h8.22l1.25-5H3.14zM5 13a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0zm9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0z"/>
+              </svg></a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
   <main>
   
     <section class="py-5 text-center container">
@@ -66,7 +98,6 @@
           <div class="col mt-4 p-1">
             <div class="card shadow-sm p-2 h-100">
               {% if product.picture_url %}
-              <!-- <img src='{{ product.picture_url }}' height="225" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"> -->
               <img src='{{ product.picture_url }}'>
               {% else %}
               <svg class="bd-placeholder-img card-img-top" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">No Picture Available</text></svg>
@@ -78,7 +109,7 @@
                 <div class="d-flex justify-content-between align-items-center">
                   <div class="btn-group">
                     <a class="btn btn-sm btn-outline-primary" href='/products/{{ product.product_id }}'>View</a>
-                    <a class="btn btn-sm btn-outline-success" href='/'>Add to Cart</a>
+                    <a class="btn btn-sm btn-outline-success" href='/add_to_wishlist/{{ product.product_id }}'>Add to Cart</a>
                   </div>
                   <small class="text-muted">${{ product.price }}</small>
                 </div>
@@ -89,17 +120,6 @@
           {% endfor %}
          
   </main>
-  
-  
-  <footer class="text-muted py-5">
-    <div class="container">
-      <p class="float-end mb-1">
-        <a href="#">Back to top</a>
-      </p>
-      <p class="mb-1">Album example is &copy; Bootstrap, but please download and customize it for yourself!</p>
-      <p class="mb-0">New to Bootstrap? <a href="https://getbootstrap.com" target="_blank">Visit the homepage</a> or read our <a href="https://getbootstrap.com/docs/5.1/getting-started/introduction/" target="_blank">getting started guide</a>.</p>
-    </div>
-  </footer>
   
 
 {% endblock %}
