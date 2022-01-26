@@ -188,6 +188,14 @@ def checkout():
     return redirect('/')
 
 
+@app.route('/map')
+def show_map():
+
+    api_key = config.API_KEY
+
+    return render_template('map.html', api_key=api_key)
+
+
 if __name__ == '__main__':
 
     app.jinja_env.auto_reload = app.debug
