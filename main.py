@@ -4,7 +4,7 @@ main.py
     Run this file to start the app
     ('python main.py')
 """
-
+import os
 from flask import (Flask, render_template, redirect, flash,
                 request, session)
 
@@ -38,7 +38,7 @@ app.jinja_env.undefined = StrictUndefined
 
 # app.config.from_object(config)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = DB_URI
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DB_URI']
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # To test:
 # print(dir(config))
