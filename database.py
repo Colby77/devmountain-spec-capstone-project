@@ -1,8 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 
 import os
-
-# from main import DB_URI
+import psycopg2
 
 db = SQLAlchemy()
 
@@ -80,22 +79,6 @@ class Wishlist(db.Model):
     product = db.relationship('Product', backref=db.backref('products', order_by=wishlist_id))
 
 
-# def get_current_user_id():
-#      '''
-#      Description:
-#          Gets the value of the current user_id
-#          primary key in the 'users' table
-#      Parameters:
-#          None
-#      Returns:
-#          Int: the current user_id primary key
-#      '''
-#      query = "SELECT currval('users_user_id_seq');"
-#      result = db.session.execute(query)
-#      print(result)
-
-
-
 def connect_to_db(app):
     '''
     Description:
@@ -105,6 +88,7 @@ def connect_to_db(app):
     '''
     from main import DB_URI
     # print(app)
+    # print(DB_URI)
     app.config['SQLALCHEMY_DATABASE_URI'] = DB_URI
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.app = app

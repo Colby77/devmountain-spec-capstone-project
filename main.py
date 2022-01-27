@@ -21,8 +21,8 @@ app = Flask(__name__)
 app.jinja_env.undefined = StrictUndefined
 
 # Production or development environment
-config = import_string('_config.DevelopmentConfig')() # development configuration
-# config = import_string('_config.ProductionConfig')() # production configuration
+# config = import_string('_config.DevelopmentConfig')() # development configuration
+config = import_string('_config.ProductionConfig')() # production configuration
 
 app.config.from_object(config)
 # To test:
