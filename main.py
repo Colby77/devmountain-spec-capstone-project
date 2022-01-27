@@ -7,16 +7,21 @@ main.py
 
 from flask import (Flask, render_template, redirect, flash,
                 request, session)
+
+from flask_sqlalchemy import SQLAlchemy
+
 from jinja2 import StrictUndefined
 from flask_debugtoolbar import DebugToolbarExtension
 
 from werkzeug.utils import import_string
 
 from database import (User, Product, Auth, Review, Wishlist,
-                    connect_to_db, db)
+                     )
 
+db = SQLAlchemy()
 
 app = Flask(__name__)
+
 
 app.jinja_env.undefined = StrictUndefined
 # app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -26,17 +31,37 @@ app.jinja_env.undefined = StrictUndefined
 
 # Production or development environment
 # config = import_string('_config.DevelopmentConfig')() # development configuration
-# config = import_string('_config.ProductionConfig')() # production configuration
+config = import_string('_config.ProductionConfig')() # production configuration
 # config = ''
 
 # if config:
 
-# app.config.from_object(config)
+app.config.from_object(config)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = DB_URI
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # To test:
 # print(dir(config))
 # print(config.DATABASE_URI)
 # DB_URI = config.DATABASE_URI
 
+def connect_to_db(app):
+    '''
+    Description:
+        Connects flask app to database
+    Returns:
+        Nothing
+    '''
+    
+    # print(app)
+    # print(DB_URI)
+    # app.config['SQLALCHEMY_DATABASE_URI'] = DB_URI
+    # app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    db.app = app
+    try:
+        db.init_app(app)
+    except Exception as err:
+        print(f'connect_to_db error: {err}')
 
 
 @app.route('/')

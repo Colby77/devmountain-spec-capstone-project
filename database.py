@@ -1,7 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 
-import os
-import psycopg2
+# import os
+# import psycopg2
 
 db = SQLAlchemy()
 
@@ -79,23 +79,23 @@ class Wishlist(db.Model):
     product = db.relationship('Product', backref=db.backref('products', order_by=wishlist_id))
 
 
-def connect_to_db(app):
-    '''
-    Description:
-        Connects flask app to database
-    Returns:
-        Nothing
-    '''
-    from main import DB_URI
-    # print(app)
-    # print(DB_URI)
-    app.config['SQLALCHEMY_DATABASE_URI'] = DB_URI
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    db.app = app
-    try:
-        db.init_app(app)
-    except Exception as err:
-        print(f'connect_to_db error: {err}')
+# def connect_to_db(app):
+#     '''
+#     Description:
+#         Connects flask app to database
+#     Returns:
+#         Nothing
+#     '''
+#     from main import DB_URI
+#     # print(app)
+#     # print(DB_URI)
+#     app.config['SQLALCHEMY_DATABASE_URI'] = DB_URI
+#     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+#     db.app = app
+#     try:
+#         db.init_app(app)
+#     except Exception as err:
+#         print(f'connect_to_db error: {err}')
 
 
 if __name__ == '__main__':
