@@ -34,6 +34,7 @@ if config:
     DB_URI = config.DATABASE_URI
 
 
+
 @app.route('/')
 def home():
 
