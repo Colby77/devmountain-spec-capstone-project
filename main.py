@@ -19,7 +19,11 @@ from database import (User, Product, Auth, Review, Wishlist,
 app = Flask(__name__)
 
 app.jinja_env.undefined = StrictUndefined
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# sqlalchemy = SQLAlchemy()
+# sqlalchemy.init_app(app)
+
 # Production or development environment
 # config = import_string('_config.DevelopmentConfig')() # development configuration
 # config = import_string('_config.ProductionConfig')() # production configuration
@@ -27,11 +31,11 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # if config:
 
-    # app.config.from_object(config)
+# app.config.from_object(config)
 # To test:
 # print(dir(config))
 # print(config.DATABASE_URI)
-    # DB_URI = config.DATABASE_URI
+# DB_URI = config.DATABASE_URI
 
 
 
@@ -210,7 +214,7 @@ def map_search():
     state = request.form['state']
     material = request.form['material']
 
-    api_key = config.API_KEY
+    api_key = API_KEY
 
     search= f'https://www.google.com/maps/embed/v1/search?key={api_key}&q=buy+{material}+near+{city}+{state}'
 
@@ -221,6 +225,8 @@ if __name__ == '__main__':
 
     app.jinja_env.auto_reload = app.debug
     DebugToolbarExtension(app)
-    connect_to_db(app)
-
+    try:
+        connect_to_db(app)
+    except Exception as err:
+        print(f'main error: {err}')
     app.run()
