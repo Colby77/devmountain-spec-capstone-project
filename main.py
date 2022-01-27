@@ -1,5 +1,12 @@
+"""
+main.py
+    The main file of the app
+    Run this file to start the app
+    ('python main.py')
+"""
+
 from flask import (Flask, render_template, redirect, flash,
-                request, session, url_for)
+                request, session)
 from jinja2 import StrictUndefined
 from flask_debugtoolbar import DebugToolbarExtension
 
@@ -37,13 +44,13 @@ def home():
 def products_page():
 
     products = Product.query.all()
-    
+
     return render_template('products.html', products=products)
 
 
 @app.route('/products/<int:id>')
 def show_product(id):
-    
+
     product = Product.query.get(id)
 
     query = """
@@ -126,7 +133,7 @@ def register():
                 user_id=new_user.user_id,
                 password=password1
             )
-            
+
             db.session.add(new_user_auth)
             db.session.commit()
             flash('Account created', 'success')
@@ -155,17 +162,17 @@ def show_wishlist():
 
             cost = qty * price
             order_total += cost
-            
+
             print(p)
             product_list.append(p)
 
     return render_template('wishlist.html', product_list=product_list, order_total=order_total)
-     
+
 
 @app.route('/add_to_wishlist/<product_id>')
 def add_to_wishlist(product_id):
-    
-    
+
+
     if session.get('wishlist'):
         if product_id in session['wishlist']:
             session['wishlist'][product_id] += 1
