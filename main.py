@@ -22,13 +22,16 @@ app.jinja_env.undefined = StrictUndefined
 
 # Production or development environment
 # config = import_string('_config.DevelopmentConfig')() # development configuration
-config = import_string('_config.ProductionConfig')() # production configuration
+# config = import_string('_config.ProductionConfig')() # production configuration
+config = ''
 
-app.config.from_object(config)
+if config:
+
+    app.config.from_object(config)
 # To test:
 # print(dir(config))
 # print(config.DATABASE_URI)
-DB_URI = config.DATABASE_URI
+    DB_URI = config.DATABASE_URI
 
 
 @app.route('/')
