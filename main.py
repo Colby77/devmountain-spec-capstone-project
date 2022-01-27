@@ -38,7 +38,7 @@ app.jinja_env.undefined = StrictUndefined
 
 # app.config.from_object(config)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DB_URI']
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # To test:
 # print(dir(config))
