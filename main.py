@@ -19,7 +19,7 @@ from database import (User, Product, Auth, Review, Wishlist,
 app = Flask(__name__)
 
 app.jinja_env.undefined = StrictUndefined
-
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # Production or development environment
 # config = import_string('_config.DevelopmentConfig')() # development configuration
 # config = import_string('_config.ProductionConfig')() # production configuration
