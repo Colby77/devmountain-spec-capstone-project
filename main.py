@@ -31,12 +31,12 @@ app.jinja_env.undefined = StrictUndefined
 
 # Production or development environment
 # config = import_string('_config.DevelopmentConfig')() # development configuration
-config = import_string('_config.ProductionConfig')() # production configuration
+# config = import_string('_config.ProductionConfig')() # production configuration
 # config = ''
 
 # if config:
 
-app.config.from_object(config)
+# app.config.from_object(config)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = DB_URI
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
