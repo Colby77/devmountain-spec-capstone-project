@@ -15,6 +15,7 @@ from werkzeug.utils import import_string
 from database import (User, Product, Auth, Review, Wishlist,
                     connect_to_db, db)
 
+
 app = Flask(__name__)
 
 app.jinja_env.undefined = StrictUndefined
@@ -28,7 +29,6 @@ app.config.from_object(config)
 # print(dir(config))
 # print(config.DATABASE_URI)
 DB_URI = config.DATABASE_URI
-
 
 
 @app.route('/')
@@ -65,13 +65,16 @@ def show_product(id):
 
     return render_template('product_page.html', product=product, reviews=reviews)
 
+
 @app.route('/login', methods=['GET'])
 def login_page():
 
     return render_template('login.html')
 
+
 @app.route('/login', methods=['POST'])
 def login():
+
     email = request.form['email']
     password = request.form['password']
 
@@ -97,13 +100,12 @@ def logout():
 
     session.clear()
     flash('Logged out', 'success')
-    print(session)
+
     return redirect('/')
 
 
 @app.route('/register', methods=['GET'])
 def register_page():
-
 
     return render_template('register.html')
 
@@ -133,9 +135,9 @@ def register():
                 user_id=new_user.user_id,
                 password=password1
             )
-
             db.session.add(new_user_auth)
             db.session.commit()
+
             flash('Account created', 'success')
             return redirect('/login')
         else:
@@ -155,10 +157,8 @@ def show_wishlist():
     if session.get('wishlist'):
         for product, qty in session['wishlist'].items():
             p = Product.query.filter_by(product_id=product).first()
-            # title = p.title
             price = p.price
             p.quantity = qty
-            # picture = p.picture_url
 
             cost = qty * price
             order_total += cost
@@ -171,7 +171,6 @@ def show_wishlist():
 
 @app.route('/add_to_wishlist/<product_id>')
 def add_to_wishlist(product_id):
-
 
     if session.get('wishlist'):
         if product_id in session['wishlist']:
@@ -198,7 +197,6 @@ def checkout():
 @app.route('/map', methods=['GET'])
 def show_map():
 
-
     return render_template('map.html', search='')
 
 @app.route('/map', methods=['POST'])
@@ -208,15 +206,12 @@ def map_search():
     state = request.form['state']
     material = request.form['material']
 
-    print(city)
-    print(state)
-    print(material)
-
     api_key = config.API_KEY
 
     search= f'https://www.google.com/maps/embed/v1/search?key={api_key}&q=buy+{material}+near+{city}+{state}'
 
     return render_template('map.html', search=search)
+
 
 if __name__ == '__main__':
 
