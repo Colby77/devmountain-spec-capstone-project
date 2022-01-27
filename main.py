@@ -23,15 +23,15 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # Production or development environment
 # config = import_string('_config.DevelopmentConfig')() # development configuration
 # config = import_string('_config.ProductionConfig')() # production configuration
-config = ''
+# config = ''
 
-if config:
+# if config:
 
-    app.config.from_object(config)
+    # app.config.from_object(config)
 # To test:
 # print(dir(config))
 # print(config.DATABASE_URI)
-    DB_URI = config.DATABASE_URI
+    # DB_URI = config.DATABASE_URI
 
 
 

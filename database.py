@@ -92,7 +92,10 @@ def connect_to_db(app):
     app.config['SQLALCHEMY_DATABASE_URI'] = DB_URI
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.app = app
-    db.init_app(app)
+    try:
+        db.init_app(app)
+    except Exception as err:
+        print(f'connect_to_db error: {err}')
 
 
 if __name__ == '__main__':
