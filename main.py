@@ -54,7 +54,7 @@ def connect_to_db(app):
     # print(DB_URI)
     # app.config['SQLALCHEMY_DATABASE_URI'] = DB_URI
     # app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    db.app = app
+    # db.app = app
     try:
         db.init_app(app)
     except Exception as err:
