@@ -37,6 +37,7 @@ app.jinja_env.undefined = StrictUndefined
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.secret_key = os.environ['SECRET_KEY']
 # To test:
 # print(dir(config))
 # print(config.DATABASE_URI)
