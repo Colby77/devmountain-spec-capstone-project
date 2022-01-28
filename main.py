@@ -42,23 +42,23 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # print(config.DATABASE_URI)
 # DB_URI = config.DATABASE_URI
 
-def connect_to_db(app):
-    '''
-    Description:
-        Connects flask app to database
-    Returns:
-        Nothing
-    '''
+# def connect_to_db(app):
+#     '''
+#     Description:
+#         Connects flask app to database
+#     Returns:
+#         Nothing
+#     '''
     
     # print(app)
     # print(DB_URI)
     # app.config['SQLALCHEMY_DATABASE_URI'] = DB_URI
     # app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     # db.app = app
-    try:
-        db.init_app(app)
-    except Exception as err:
-        print(f'connect_to_db error: {err}')
+try:
+    db.init_app(app)
+except Exception as err:
+    print(f'connect_to_db error: {err}')
 
 
 @app.route('/')
@@ -247,8 +247,8 @@ if __name__ == '__main__':
 
     app.jinja_env.auto_reload = app.debug
     DebugToolbarExtension(app)
-    try:
-        connect_to_db(app)
-    except Exception as err:
-        print(f'main error: {err}')
+    # try:
+    #     connect_to_db(app)
+    # except Exception as err:
+    #     print(f'main error: {err}')
     app.run()
