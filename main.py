@@ -5,6 +5,8 @@ main.py
     ('python main.py')
 """
 import os
+from dotenv import load_dotenv
+
 from flask import (Flask, render_template, redirect, flash,
                 request, session)
 
@@ -25,10 +27,22 @@ app = Flask(__name__)
 
 app.jinja_env.undefined = StrictUndefined
 
+try:
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
+    app.secret_key = os.environ['SECRET_KEY']
+    api_key = os.environ['API_KEY']
+except KeyError:
+    load_dotenv('.env')
 
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
+    app.secret_key = os.environ['SECRET_KEY']
+    app.config['ENV'] = os.environ['ENV']
+    api_key = os.environ['API_KEY']
+    app.debug = os.environ['DEBUG']
+    environment = os.environ['ENV']
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.secret_key = os.environ['SECRET_KEY']
+
 
 
 try:
