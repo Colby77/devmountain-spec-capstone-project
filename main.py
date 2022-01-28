@@ -237,7 +237,7 @@ def map_search():
     state = request.form['state']
     material = request.form['material']
 
-    api_key = API_KEY
+    api_key = os.environ['API_KEY']
 
     search= f'https://www.google.com/maps/embed/v1/search?key={api_key}&q=buy+{material}+near+{city}+{state}'
 

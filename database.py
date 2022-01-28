@@ -102,6 +102,6 @@ if __name__ == '__main__':
     from main import app
 
     # app.config.from_object(config)
-    connect_to_db(app)
+    # connect_to_db(app)
     # db.create_all()
     print('Database Connected')
