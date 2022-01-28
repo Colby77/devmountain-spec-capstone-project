@@ -1,8 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 
-import os
-
-# from main import DB_URI
+# import os
+# import psycopg2
 
 db = SQLAlchemy()
 
@@ -80,41 +79,29 @@ class Wishlist(db.Model):
     product = db.relationship('Product', backref=db.backref('products', order_by=wishlist_id))
 
 
-# def get_current_user_id():
-#      '''
-#      Description:
-#          Gets the value of the current user_id
-#          primary key in the 'users' table
-#      Parameters:
-#          None
-#      Returns:
-#          Int: the current user_id primary key
-#      '''
-#      query = "SELECT currval('users_user_id_seq');"
-#      result = db.session.execute(query)
-#      print(result)
-
-
-
-def connect_to_db(app):
-    '''
-    Description:
-        Connects flask app to database
-    Returns:
-        Nothing
-    '''
-    from main import DB_URI
-    # print(app)
-    app.config['SQLALCHEMY_DATABASE_URI'] = DB_URI
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    db.app = app
-    db.init_app(app)
+# def connect_to_db(app):
+#     '''
+#     Description:
+#         Connects flask app to database
+#     Returns:
+#         Nothing
+#     '''
+#     from main import DB_URI
+#     # print(app)
+#     # print(DB_URI)
+#     app.config['SQLALCHEMY_DATABASE_URI'] = DB_URI
+#     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+#     db.app = app
+#     try:
+#         db.init_app(app)
+#     except Exception as err:
+#         print(f'connect_to_db error: {err}')
 
 
 if __name__ == '__main__':
     from main import app
 
     # app.config.from_object(config)
-    connect_to_db(app)
+    # connect_to_db(app)
     # db.create_all()
     print('Database Connected')

@@ -4,33 +4,37 @@ main.py
     Run this file to start the app
     ('python main.py')
 """
-
-# Testing new development git branch
-
+import os
 from flask import (Flask, render_template, redirect, flash,
                 request, session)
+
+from flask_sqlalchemy import SQLAlchemy
+
 from jinja2 import StrictUndefined
 from flask_debugtoolbar import DebugToolbarExtension
 
 from werkzeug.utils import import_string
 
 from database import (User, Product, Auth, Review, Wishlist,
-                    connect_to_db, db)
+                     )
 
+db = SQLAlchemy()
 
 app = Flask(__name__)
 
+
 app.jinja_env.undefined = StrictUndefined
 
-# Production or development environment
-config = import_string('_config.DevelopmentConfig')() # development configuration
-# config = import_string('_config.ProductionConfig')() # production configuration
 
-app.config.from_object(config)
-# To test:
-# print(dir(config))
-# print(config.DATABASE_URI)
-DB_URI = config.DATABASE_URI
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.secret_key = os.environ['SECRET_KEY']
+
+
+try:
+    db.init_app(app)
+except Exception as err:
+    print(f'connect_to_db error: {err}')
 
 
 @app.route('/')
@@ -208,7 +212,7 @@ def map_search():
     state = request.form['state']
     material = request.form['material']
 
-    api_key = config.API_KEY
+    api_key = os.environ['API_KEY']
 
     search= f'https://www.google.com/maps/embed/v1/search?key={api_key}&q=buy+{material}+near+{city}+{state}'
 
@@ -219,6 +223,4 @@ if __name__ == '__main__':
 
     app.jinja_env.auto_reload = app.debug
     DebugToolbarExtension(app)
-    connect_to_db(app)
-
-    app.run(port=5000)
+    app.run()
