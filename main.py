@@ -24,38 +24,13 @@ app = Flask(__name__)
 
 
 app.jinja_env.undefined = StrictUndefined
-# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# sqlalchemy = SQLAlchemy()
-# sqlalchemy.init_app(app)
-
-# Production or development environment
-# config = import_string('_config.DevelopmentConfig')() # development configuration
-# config = import_string('_config.ProductionConfig')() # production configuration
-
-# app.config.from_object(config)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = os.environ['SECRET_KEY']
-# To test:
-# print(dir(config))
-# print(config.DATABASE_URI)
-# DB_URI = config.DATABASE_URI
 
-# def connect_to_db(app):
-#     '''
-#     Description:
-#         Connects flask app to database
-#     Returns:
-#         Nothing
-#     '''
-    
-    # print(app)
-    # print(DB_URI)
-    # app.config['SQLALCHEMY_DATABASE_URI'] = DB_URI
-    # app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    # db.app = app
+
 try:
     db.init_app(app)
 except Exception as err:
@@ -248,8 +223,4 @@ if __name__ == '__main__':
 
     app.jinja_env.auto_reload = app.debug
     DebugToolbarExtension(app)
-    # try:
-    #     connect_to_db(app)
-    # except Exception as err:
-    #     print(f'main error: {err}')
     app.run()
