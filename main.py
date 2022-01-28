@@ -27,6 +27,9 @@ app = Flask(__name__)
 
 app.jinja_env.undefined = StrictUndefined
 
+# if there is a key DATABASE_URL, it is coming from heroku first so
+# it should use the production enviornment variables
+# or else it will load the environment variables from the .env file
 try:
     app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
     app.secret_key = os.environ['SECRET_KEY']
@@ -234,7 +237,7 @@ def map_search():
 
 
 if __name__ == '__main__':
-
+    app.debug = os.environ['DEBUG']
     app.jinja_env.auto_reload = app.debug
     DebugToolbarExtension(app)
     app.run()
