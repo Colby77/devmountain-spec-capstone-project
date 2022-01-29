@@ -44,7 +44,7 @@ except KeyError:
     app.secret_key = os.environ['SECRET_KEY']
     app.config['ENV'] = os.environ['ENV']
     api_key = os.environ['API_KEY']
-    app.debug = os.environ['DEBUG']
+    # app.debug = os.environ['DEBUG']
     environment = os.environ['ENV']
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -95,7 +95,7 @@ def show_product(id):
     reviews = db.session.execute(query)
     
     with open('record.txt', 'a') as record:
-        record.write(f'{product.title}| viewed\n')
+        record.write(f'{product.product_id}| viewed\n')
         record.close()
 
     return render_template('product_page.html', product=product, reviews=reviews)
@@ -125,7 +125,7 @@ def view_count():
 
     bar_chart = bar_fig.subplots()
     bar_chart.set_xticks(range(len(counts)), products)
-    bar_chart.set_xlabel('Products')
+    bar_chart.set_xlabel('Products (product_id)')
     bar_chart.set_ylabel('Views')
     bar_chart.bar(range(len(counts)), counts)
 
@@ -149,14 +149,11 @@ def view_count():
 
     # Save it to a temporary buffer.
     buf = BytesIO()
-    pie_fig.suptitle('Most Viewed Products')
+    pie_fig.suptitle('Most Viewed Products by %')
     pie_fig.savefig(buf, format="png")
-    data = base64.b64encode(buf.getbuffer()).decode("ascii")
-    return f"""<img src='data:image/png;base64,{data}' width='700'/>
-            <img src='data:image/png;base64,{data1}' width='700'/>
-            """
+    data2 = base64.b64encode(buf.getbuffer()).decode("ascii")
 
-    # return render_template('view_count.html')
+    return render_template('view_count.html', data1=data1, data2=data2)
 
 
 @app.route('/login', methods=['GET'])
@@ -307,7 +304,7 @@ def map_search():
 
 
 if __name__ == '__main__':
-    
+    app.debug = os.environ['DEBUG']
     app.jinja_env.auto_reload = app.debug
     DebugToolbarExtension(app)
     app.run()
