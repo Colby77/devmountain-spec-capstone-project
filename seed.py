@@ -1,13 +1,11 @@
 from decimal import Decimal
 from random import randint
-import os
 
 from faker import Faker
 from sqlalchemy import func
 import bcrypt
-# from flask_sqlalchemy import SQLAlchemy
-from dotenv import load_dotenv
 
+from dotenv import load_dotenv
 
 
 from main import app
@@ -67,7 +65,6 @@ def create_users(quantity=10):
 
         db.session.add(user)
         db.session.add(auth)
-
 
     # create specific root user
 

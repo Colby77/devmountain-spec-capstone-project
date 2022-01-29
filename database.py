@@ -6,9 +6,6 @@ database.py
 
 from flask_sqlalchemy import SQLAlchemy
 
-# import os
-# import psycopg2
-
 db = SQLAlchemy()
 
 
@@ -21,7 +18,6 @@ class User(db.Model):
     email = db.Column(db.String(), nullable=False, unique=True)
     username = db.Column(db.String(), nullable=False, unique=True)
 
-    # user_auth = db.relationship('Auth', back_populates='users', uselist=False)
     user_auth = db.relationship('Auth', backref='users', uselist=False)
     user_review = db.relationship('Review', back_populates='from_user', uselist=False)
 
