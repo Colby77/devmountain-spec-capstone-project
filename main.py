@@ -3,12 +3,18 @@ main.py
     The main file of the app
     Run this file to start the app
     ('python main.py')
+Author: Colby Workman
 """
+from email.mime import base
 import os
-from dotenv import load_dotenv
+import base64
+from io import BytesIO
 
 from flask import (Flask, render_template, redirect, flash,
                 request, session)
+from dotenv import load_dotenv
+import matplotlib.pyplot as plt
+from matplotlib.figure import Figure
 
 from flask_sqlalchemy import SQLAlchemy
 
@@ -27,9 +33,6 @@ app = Flask(__name__)
 
 app.jinja_env.undefined = StrictUndefined
 
-# if there is a key DATABASE_URL, it is coming from heroku first so
-# it should use the production enviornment variables
-# or else it will load the environment variables from the .env file
 try:
     app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
     app.secret_key = os.environ['SECRET_KEY']
@@ -52,6 +55,11 @@ try:
     db.init_app(app)
 except Exception as err:
     print(f'connect_to_db error: {err}')
+
+
+
+ 
+# logging.basicConfig(filename='record.log', level=logging.INFO, format = f'%(asctime)s %(name)s %(threadName)s : %(message)s')
 
 
 @app.route('/')
@@ -85,8 +93,70 @@ def show_product(id):
     """.format(product.product_id)
 
     reviews = db.session.execute(query)
+    
+    with open('record.txt', 'a') as record:
+        record.write(f'{product.title}| viewed\n')
+        record.close()
 
     return render_template('product_page.html', product=product, reviews=reviews)
+
+
+@app.route('/views')
+def view_count():
+
+    total_views = 0
+    product_counts = {}
+
+    views = open('record.txt', 'r')
+
+    for view in views:
+        total_views += 1
+        view = view.split('|')
+        try:
+            product_counts[view[0]] += 1
+        except KeyError:
+            product_counts[view[0]] = 1
+
+    products = list(product_counts.keys())
+    counts = list(product_counts.values())
+
+    # Matplotlib Bar Chart
+    bar_fig = Figure()
+
+    bar_chart = bar_fig.subplots()
+    bar_chart.set_xticks(range(len(counts)), products)
+    bar_chart.set_xlabel('Products')
+    bar_chart.set_ylabel('Views')
+    bar_chart.bar(range(len(counts)), counts)
+
+    bar_fig.suptitle('Most Viewed By Count')
+
+    bar_buf = BytesIO()
+    bar_fig.savefig(bar_buf, format='png')
+
+    data1 = base64.b64encode(bar_buf.getbuffer()).decode('ascii')
+
+    # Matplotlib Pie Chart
+    pie_fig = Figure()
+
+    labels = products
+    sizes = counts
+
+    ax1 = pie_fig.subplots()
+    ax1.pie(sizes, explode=None, labels=labels, autopct='%1.1f%%',
+            shadow=True, startangle=90)
+    ax1.axis('equal')
+
+    # Save it to a temporary buffer.
+    buf = BytesIO()
+    pie_fig.suptitle('Most Viewed Products')
+    pie_fig.savefig(buf, format="png")
+    data = base64.b64encode(buf.getbuffer()).decode("ascii")
+    return f"""<img src='data:image/png;base64,{data}' width='700'/>
+            <img src='data:image/png;base64,{data1}' width='700'/>
+            """
+
+    # return render_template('view_count.html')
 
 
 @app.route('/login', methods=['GET'])
@@ -237,7 +307,7 @@ def map_search():
 
 
 if __name__ == '__main__':
-    app.debug = os.environ['DEBUG']
+    
     app.jinja_env.auto_reload = app.debug
     DebugToolbarExtension(app)
     app.run()

@@ -1,3 +1,9 @@
+"""
+database.py
+    Defines the database models for the project
+    as classes
+"""
+
 from flask_sqlalchemy import SQLAlchemy
 
 # import os
