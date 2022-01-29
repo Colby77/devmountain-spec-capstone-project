@@ -1,15 +1,31 @@
 from decimal import Decimal
 from random import randint
+import os
 
 from faker import Faker
 from sqlalchemy import func
+import bcrypt
+# from flask_sqlalchemy import SQLAlchemy
+from dotenv import load_dotenv
+
+
 
 from main import app
-from database import (connect_to_db, db, User,
-                    Auth, Review, Wishlist, Product)
+from database import (db, User, Auth, Review, Product)
 
 
+# db = SQLAlchemy()
 fake = Faker()
+
+
+def connect_to_db(app):
+    '''
+    Creates a database context with
+    the db connection from main.py
+    '''
+    db.init_app(app)
+    db.app = app
+    print('db connected')
 
 
 def create_users(quantity=10):
@@ -34,6 +50,9 @@ def create_users(quantity=10):
         username = fake.user_name()
         password = fake.password()
 
+        hashed_pw = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+        hashed_pw = hashed_pw.decode('utf-8')
+
         user = User(
             user_id=x,
             email=email,
@@ -43,7 +62,7 @@ def create_users(quantity=10):
         auth = Auth(
             auth_id=x,
             user_id=user.user_id,
-            password=password
+            password=hashed_pw
         )
 
         db.session.add(user)
@@ -51,6 +70,10 @@ def create_users(quantity=10):
 
 
     # create specific root user
+
+    hashed_pw = bcrypt.hashpw('root'.encode('utf-8'), bcrypt.gensalt())
+    hashed_pw = hashed_pw.decode('utf-8')
+
     root = User(
         user_id=quantity,
         email='root@root.com',
@@ -59,7 +82,7 @@ def create_users(quantity=10):
     root_auth = Auth(
         auth_id=quantity,
         user_id=root.user_id,
-        password='root'
+        password=hashed_pw
     )
 
     db.session.add(root)
@@ -67,6 +90,7 @@ def create_users(quantity=10):
 
     db.session.commit()
     print('Users/Auth seeded!')
+
 
 def create_products(quantity=10):
     '''
@@ -115,7 +139,8 @@ def create_products(quantity=10):
 
     # create random fake products
     for x in range(0, quantity):
-        title = fake.bs()
+        # title = fake.bs()
+        title = fake.text(max_nb_chars=40)
         description = fake.text(max_nb_chars=150)
         price = fake.pricetag()
 
@@ -136,8 +161,6 @@ def create_products(quantity=10):
         count += 1
 
         db.session.add(product)
-
-   
 
     db.session.commit()
     print('Products seeded!')
@@ -163,20 +186,22 @@ def create_reviews():
 
     for row in db.session.query(Product.product_id).all():
         
-        random_user = randint(1, total)
-        rating = randint(1, 5)
-        review_content = fake.text(max_nb_chars=150)
+        # make 3 reviews for each product
+        for num in range(0, 3):
+            random_user = randint(1, total)
+            rating = randint(1, 5)
+            review_content = fake.text(max_nb_chars=150)
 
-        review = Review(
-                review_id = count,
-                user_id = random_user,
-                product_id = row.product_id,
-                rating = rating,
-                review_content = review_content
-                )
-        count += 1
+            review = Review(
+                    review_id = count,
+                    user_id = random_user,
+                    product_id = row.product_id,
+                    rating = rating,
+                    review_content = review_content
+                    )
+            count += 1
 
-        db.session.add(review)
+            db.session.add(review)
     
     db.session.commit()
     print('Reviews seeded!')
@@ -193,14 +218,12 @@ def set_user_id_seq():
     '''
     result = db.session.query(func.max(User.user_id)).one()
     max_id = int(result[0])
-    print(max_id)
 
     user_sequence = f"SELECT setval('users_user_id_seq', {max_id});"
     db.session.execute(user_sequence)
 
     result = db.session.query(func.max(Auth.auth_id)).one()
     max_id = int(result[0])
-    print(max_id)
 
     auth_sequence = f"SELECT setval('auth_auth_id_seq', {max_id});"
     db.session.execute(auth_sequence)
@@ -212,6 +235,7 @@ def set_user_id_seq():
         
 
 if __name__ == '__main__':
+
     connect_to_db(app)
 
     Auth.query.delete()

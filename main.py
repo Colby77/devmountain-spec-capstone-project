@@ -5,7 +5,6 @@ main.py
     ('python main.py')
 Author: Colby Workman
 """
-from email.mime import base
 import os
 import base64
 from io import BytesIO
@@ -15,6 +14,7 @@ from flask import (Flask, render_template, redirect, flash,
 from dotenv import load_dotenv
 import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
+import bcrypt
 
 from flask_sqlalchemy import SQLAlchemy
 
@@ -23,8 +23,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 
 from werkzeug.utils import import_string
 
-from database import (User, Product, Auth, Review, Wishlist,
-                     )
+from database import (User, Product, Auth, Review)
 
 db = SQLAlchemy()
 
@@ -44,7 +43,6 @@ except KeyError:
     app.secret_key = os.environ['SECRET_KEY']
     app.config['ENV'] = os.environ['ENV']
     api_key = os.environ['API_KEY']
-    # app.debug = os.environ['DEBUG']
     environment = os.environ['ENV']
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -55,11 +53,6 @@ try:
     db.init_app(app)
 except Exception as err:
     print(f'connect_to_db error: {err}')
-
-
-
- 
-# logging.basicConfig(filename='record.log', level=logging.INFO, format = f'%(asctime)s %(name)s %(threadName)s : %(message)s')
 
 
 @app.route('/')
@@ -172,7 +165,9 @@ def login():
 
     if user:
         user_password = Auth.query.filter_by(user_id=user.user_id).first()
-        if user_password.password == password:
+        user_password_bytes = bytes(user_password.password, 'utf-8')
+
+        if bcrypt.checkpw(password.encode('utf-8'), user_password_bytes):
             session['user'] = user.username
             print(session)
             flash(f'Welcome {session["user"]}!', 'success')
@@ -214,6 +209,8 @@ def register():
 
     if password1 == password2:
         if not user:
+            hashed_pw = bcrypt.hashpw(password1.encode('utf-8'), bcrypt.gensalt())
+            hashed_pw = hashed_pw.decode('utf-8')
             new_user = User(
                 email=email,
                 username=username
@@ -223,7 +220,7 @@ def register():
 
             new_user_auth = Auth(
                 user_id=new_user.user_id,
-                password=password1
+                password=hashed_pw
             )
             db.session.add(new_user_auth)
             db.session.commit()

@@ -72,17 +72,17 @@ class Review(db.Model):
     # product = db.relationship('Product', backref=db.backref('p', order_by=review_id))
 
 
-class Wishlist(db.Model):
-    '''db model for wishlist table'''
+# class Wishlist(db.Model):
+#     '''db model for wishlist table'''
 
-    __tablename__ = 'wishlists'
+#     __tablename__ = 'wishlists'
 
-    wishlist_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
-    product_id = db.Column(db.Integer, db.ForeignKey('products.product_id'))
+#     wishlist_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+#     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+#     product_id = db.Column(db.Integer, db.ForeignKey('products.product_id'))
 
-    user = db.relationship('User', backref=db.backref('users', order_by=wishlist_id))
-    product = db.relationship('Product', backref=db.backref('products', order_by=wishlist_id))
+#     user = db.relationship('User', backref=db.backref('users', order_by=wishlist_id))
+#     product = db.relationship('Product', backref=db.backref('products', order_by=wishlist_id))
 
 
 # def connect_to_db(app):
@@ -106,6 +106,8 @@ class Wishlist(db.Model):
 
 if __name__ == '__main__':
     from main import app
+    db.init_app(app)
+    db.app = app
 
     # app.config.from_object(config)
     # connect_to_db(app)
