@@ -1,7 +1,7 @@
-# WeldingStuff.com
+# DIYers.com
 
 ## Project Description
-A shopping site for welding tools
+A shopping site for do-it-yourself-ers
 
 ## MVP
     -Users can see all available products
