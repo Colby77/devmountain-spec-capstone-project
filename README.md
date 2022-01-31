@@ -3,19 +3,21 @@
 ## Project Description
 A shopping site for do-it-yourself-ers
 
-## MVP
-    -Users can see all available products
-    -Users can see details about a specific product
-    -Users can review/rate products
-    -Users can login/logout and register an account
-    -User info, reviews and wishlist items are saved to the database
-    -All products are saved in the database
+Deployed on heroku: https://devmountain-spec-project-cw.herokuapp.com/
 
-#### Bonuses
-    -Deployment on heroku
-    -Use google maps API to allow users to find welding materials in a given
-    city
-    -Email notifications
+A shopping site for do-it-yourself-ers.  The site would sell tools for peoples' hobbies like welding or woodworking or automotive related stuff.  The features include basic website functionality like registering an account and adding items to the 'cart'.  I also added a supply locator feature where users can enter a city and material they need and find stores where to buy the material near the city.  Every time a product is viewed, it is counted and represented in a graph as well.
+
+The biggest challenges in this project were using SQLAlchemy to model the database tables and deploying the site on heroku.  While I used bootstrap to save a massive amount of time styling and create a nice look, it was tricky to learn how to use as well.
+
+## Tech Used
+    -Python
+        -Flask
+        -SQLAlchemy
+        -Matplotlib
+    -Bootstrap
+    -HTML/CSS
+    -PostgreSQL
+    -Google Maps Embed API: https://developers.google.com/maps/documentation/embed/get-started
 
 ## Data Model
 Data model of the database for the project.
@@ -38,11 +40,6 @@ __auth__
 - *user_id*, references users
 - username/password are stored and checked here for login
 
-__wishlist__
-- *wishlist_id*, serial primary key
-- *user_id*, references users
-- *product_id*, references products
-
 __reviews__
 - *review_id*, serial primary key
 - *user_id*, references users
@@ -62,8 +59,8 @@ __products__
 
 One-Many | Many-Many | One-One
 -------- | --------- | -------
-One user can have many products on wishlist | Many users review many products through the reviews table | One user to one user_id on auth table
-A product has many reviews | |
+A product has many reviews | Many users review many products through the reviews table | One user to one user_id on auth table
+ | |
 
 
 
